@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>國小四年級單字大挑戰</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', 'Microsoft JhengHei', sans-serif;
+            background-color: #f0f8ff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: #333;
+        }
+        h1 { color: #2c3e50; text-align: center; margin-bottom: 10px; }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        .mode-switch { margin-bottom: 20px; }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        button:hover { transform: scale(1.05); }
+        button.active { background-color: #2E8B57; border: 2px solid #fff; box-shadow: 0 0 5px rgba(0,0,0,0.2); }
+        
+        /* Flashcard Styles */
+        .card {
+            background: #ffeb3b;
+            color: #333;
+            padding: 40px;
+            border-radius: 15px;
+            font-size: 32px;
+            margin: 20px 0;
+            cursor: pointer;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            user-select: none; /* 防止選取文字 */
+        }
+        .card:active { transform: scale(0.95); }
+        
+        /* Quiz Styles */
+        .input-group { margin: 20px 0; }
+        input[type="text"] {
+            padding: 15px;
+            font-size: 20px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            width: 70%;
+            text-align: center;
+        }
+        .feedback {
+            min-height: 30px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .correct { color: green; }
+        .wrong { color: red; }
+        .score-board { margin-top: 20px; font-size: 18px; color: #555; }
+
+        /* Hidden elements */
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <h1>?? 單字大挑戰 ??</h1>
+    <p style="text-align: center; color: #666; font-size: 0.9em;">為四年級設計的專屬練習</p>
+
+    <div class="container">
+        <div class="mode-switch">
+            <button onclick="setMode('study')" id="btn-study" class="active">?? 練習模式</button>
+            <button onclick="setMode('quiz')" id="btn-quiz">?? 考試模式</button>
+        </div>
+
+        <div id="study-area">
+            <h3>點擊卡片翻面</h3>
+            <div class="card" onclick="flipCard()" id="flashcard">
+                載入中...
+            </div>
+            <button onclick="nextCard()">下一個單字 ??</button>
+        </div>
+
+        <div id="quiz-area" class="hidden">
+            <h3>看中文拼英文</h3>
+            <div class="card" style="background: #e0f7fa; cursor: default;">
+                <span id="quiz-question">題目</span>
+            </div>
+            <div class="input-group">
+                <input type="text" id="answer-input" placeholder="在這裡打字..." autocomplete="off">
+            </div>
+            <button onclick="checkAnswer()">送出答案 ?</button>
+            <div class="feedback" id="feedback"></div>
+            <div class="score-board">
+                分數: <span id="score">0</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 單字資料庫 (已修正：飲食 -> Diet)
+        const vocabList = [
+            { ch: "聖誕節", en: "Christmas" },
+            { ch: "飲食", en: "Diet" }, 
+            { ch: "盤子", en: "Plate" },
+            { ch: "躲", en: "Hide" },
+            { ch: "在…後", en: "Behind" },
+            { ch: "頭髮", en: "Hair" },
+            { ch: "鼻子", en: "Nose" }
+        ];
+
+        let currentIdx = 0;
+        let isFlipped = false;
+        let score = 0;
+        let currentQuizWord = null;
+
+        // 初始化
+        window.onload = function() {
+            updateCard();
+            newQuizQuestion();
+        };
+
+        function setMode(mode) {
+            document.getElementById('study-area').classList.toggle('hidden', mode !== 'study');
+            document.getElementById('quiz-area').classList.toggle('hidden', mode !== 'quiz');
+            document.getElementById('btn-study').classList.toggle('active', mode === 'study');
+            document.getElementById('btn-quiz').classList.toggle('active', mode === 'quiz');
+            
+            // 切換模式時，如果是去考試，就重新聚焦輸入框
+            if(mode === 'quiz') {
+                document.getElementById('answer-input').focus();
+            }
+        }
+
+        // --- 練習模式邏輯 ---
+        function updateCard() {
+            const card = document.getElementById('flashcard');
+            card.innerText = vocabList[currentIdx].ch;
+            card.style.background = '#ffeb3b'; // 黃色
+            isFlipped = false;
+        }
+
+        function flipCard() {
+            const card = document.getElementById('flashcard');
+            if (isFlipped) {
+                card.innerText = vocabList[currentIdx].ch;
+                card.style.background = '#ffeb3b';
+            } else {
+                card.innerText = vocabList[currentIdx].en;
+                card.style.background = '#fff9c4'; // 淺黃
+            }
+            isFlipped = !isFlipped;
+        }
+
+        function nextCard() {
+            currentIdx = (currentIdx + 1) % vocabList.length;
+            updateCard();
+        }
+
+        // --- 考試模式邏輯 ---
+        function newQuizQuestion() {
+            const randIndex = Math.floor(Math.random() * vocabList.length);
+            currentQuizWord = vocabList[randIndex];
+            document.getElementById('quiz-question').innerText = currentQuizWord.ch;
+            document.getElementById('answer-input').value = '';
+            document.getElementById('feedback').innerText = '';
+            document.getElementById('answer-input').focus();
+        }
+
+        function checkAnswer() {
+            const userAns = document.getElementById('answer-input').value.trim();
+            const feedback = document.getElementById('feedback');
+            
+            if (!userAns) return; // 防止空字串送出
+
+            if (userAns.toLowerCase() === currentQuizWord.en.toLowerCase()) {
+                feedback.innerText = "答對了！太棒了！ ??";
+                feedback.className = "feedback correct";
+                score += 10;
+                document.getElementById('score').innerText = score;
+                // 答對後 1.5 秒自動下一題
+                setTimeout(newQuizQuestion, 1500);
+            } else {
+                feedback.innerText = `再試一次！(提示: ${currentQuizWord.en.charAt(0)}...)`;
+                feedback.className = "feedback wrong";
+            }
+        }
+        
+        // 讓按下 Enter 也能送出答案
+        document.getElementById("answer-input").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                checkAnswer();
+            }
+        });
+    </script>
+</body>
+</html>
