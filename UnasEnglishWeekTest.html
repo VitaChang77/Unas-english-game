@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>°ê¤p¥|¦~¯Å³æ¦r¤j¬D¾Ô</title>
+    <title>åœ‹å°å››å¹´ç´šå–®å­—å¤§æŒ‘æˆ°</title>
     <style>
         body {
             font-family: 'Comic Sans MS', 'Microsoft JhengHei', sans-serif;
@@ -54,7 +54,7 @@
             justify-content: center;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             transition: transform 0.3s;
-            user-select: none; /* ¨¾¤î¿ï¨ú¤å¦r */
+            user-select: none; /* é˜²æ­¢é¸å–æ–‡å­— */
         }
         .card:active { transform: scale(0.95); }
         
@@ -83,49 +83,49 @@
 </head>
 <body>
 
-    <h1>?? ³æ¦r¤j¬D¾Ô ??</h1>
-    <p style="text-align: center; color: #666; font-size: 0.9em;">¬°¥|¦~¯Å³]­pªº±MÄİ½m²ß</p>
+    <h1> å–®å­—å¤§æŒ‘æˆ° </h1>
+    <p style="text-align: center; color: #666; font-size: 0.9em;">ç‚ºå››å¹´ç´šè¨­è¨ˆçš„å°ˆå±¬ç·´ç¿’</p>
 
     <div class="container">
         <div class="mode-switch">
-            <button onclick="setMode('study')" id="btn-study" class="active">?? ½m²ß¼Ò¦¡</button>
-            <button onclick="setMode('quiz')" id="btn-quiz">?? ¦Ò¸Õ¼Ò¦¡</button>
+            <button onclick="setMode('study')" id="btn-study" class="active">?? ç·´ç¿’æ¨¡å¼</button>
+            <button onclick="setMode('quiz')" id="btn-quiz">?? è€ƒè©¦æ¨¡å¼</button>
         </div>
 
         <div id="study-area">
-            <h3>ÂIÀ»¥d¤ùÂ½­±</h3>
+            <h3>é»æ“Šå¡ç‰‡ç¿»é¢</h3>
             <div class="card" onclick="flipCard()" id="flashcard">
-                ¸ü¤J¤¤...
+                è¼‰å…¥ä¸­...
             </div>
-            <button onclick="nextCard()">¤U¤@­Ó³æ¦r ??</button>
+            <button onclick="nextCard()">ä¸‹ä¸€å€‹å–®å­— ??</button>
         </div>
 
         <div id="quiz-area" class="hidden">
-            <h3>¬İ¤¤¤å«÷­^¤å</h3>
+            <h3>çœ‹ä¸­æ–‡æ‹¼è‹±æ–‡</h3>
             <div class="card" style="background: #e0f7fa; cursor: default;">
-                <span id="quiz-question">ÃD¥Ø</span>
+                <span id="quiz-question">é¡Œç›®</span>
             </div>
             <div class="input-group">
-                <input type="text" id="answer-input" placeholder="¦b³o¸Ì¥´¦r..." autocomplete="off">
+                <input type="text" id="answer-input" placeholder="åœ¨é€™è£¡æ‰“å­—..." autocomplete="off">
             </div>
-            <button onclick="checkAnswer()">°e¥Xµª®× ?</button>
+            <button onclick="checkAnswer()">é€å‡ºç­”æ¡ˆ ?</button>
             <div class="feedback" id="feedback"></div>
             <div class="score-board">
-                ¤À¼Æ: <span id="score">0</span>
+                åˆ†æ•¸: <span id="score">0</span>
             </div>
         </div>
     </div>
 
     <script>
-        // ³æ¦r¸ê®Æ®w (¤w­×¥¿¡G¶¼­¹ -> Diet)
+        
         const vocabList = [
-            { ch: "¸t½Ï¸`", en: "Christmas" },
-            { ch: "¶¼­¹", en: "Diet" }, 
-            { ch: "½L¤l", en: "Plate" },
-            { ch: "¸ú", en: "Hide" },
-            { ch: "¦b¡K«á", en: "Behind" },
-            { ch: "ÀY¾v", en: "Hair" },
-            { ch: "»ó¤l", en: "Nose" }
+            { ch: "è–èª•ç¯€", en: "Christmas" },
+            { ch: "é£²é£Ÿ", en: "diet" }, 
+            { ch: "ç›¤å­", en: "plate" },
+            { ch: "èº²", en: "hide" },
+            { ch: "åœ¨â€¦å¾Œ", en: "behind" },
+            { ch: "é ­é«®", en: "hair" },
+            { ch: "é¼»å­", en: "nose" }
         ];
 
         let currentIdx = 0;
@@ -133,7 +133,7 @@
         let score = 0;
         let currentQuizWord = null;
 
-        // ªì©l¤Æ
+        // åˆå§‹åŒ–
         window.onload = function() {
             updateCard();
             newQuizQuestion();
@@ -145,17 +145,17 @@
             document.getElementById('btn-study').classList.toggle('active', mode === 'study');
             document.getElementById('btn-quiz').classList.toggle('active', mode === 'quiz');
             
-            // ¤Á´«¼Ò¦¡®É¡A¦pªG¬O¥h¦Ò¸Õ¡A´N­«·s»EµJ¿é¤J®Ø
+            // åˆ‡æ›æ¨¡å¼æ™‚ï¼Œå¦‚æœæ˜¯å»è€ƒè©¦ï¼Œå°±é‡æ–°èšç„¦è¼¸å…¥æ¡†
             if(mode === 'quiz') {
                 document.getElementById('answer-input').focus();
             }
         }
 
-        // --- ½m²ß¼Ò¦¡ÅŞ¿è ---
+        // --- ç·´ç¿’æ¨¡å¼é‚è¼¯ ---
         function updateCard() {
             const card = document.getElementById('flashcard');
             card.innerText = vocabList[currentIdx].ch;
-            card.style.background = '#ffeb3b'; // ¶À¦â
+            card.style.background = '#ffeb3b'; // é»ƒè‰²
             isFlipped = false;
         }
 
@@ -166,7 +166,7 @@
                 card.style.background = '#ffeb3b';
             } else {
                 card.innerText = vocabList[currentIdx].en;
-                card.style.background = '#fff9c4'; // ²L¶À
+                card.style.background = '#fff9c4'; // æ·ºé»ƒ
             }
             isFlipped = !isFlipped;
         }
@@ -176,7 +176,7 @@
             updateCard();
         }
 
-        // --- ¦Ò¸Õ¼Ò¦¡ÅŞ¿è ---
+        // --- è€ƒè©¦æ¨¡å¼é‚è¼¯ ---
         function newQuizQuestion() {
             const randIndex = Math.floor(Math.random() * vocabList.length);
             currentQuizWord = vocabList[randIndex];
@@ -190,22 +190,22 @@
             const userAns = document.getElementById('answer-input').value.trim();
             const feedback = document.getElementById('feedback');
             
-            if (!userAns) return; // ¨¾¤îªÅ¦r¦ê°e¥X
+            if (!userAns) return; // é˜²æ­¢ç©ºå­—ä¸²é€å‡º
 
             if (userAns.toLowerCase() === currentQuizWord.en.toLowerCase()) {
-                feedback.innerText = "µª¹ï¤F¡I¤Ó´Î¤F¡I ??";
+                feedback.innerText = "ç­”å°äº†ï¼å¤ªæ£’äº†ï¼ ";
                 feedback.className = "feedback correct";
                 score += 10;
                 document.getElementById('score').innerText = score;
-                // µª¹ï«á 1.5 ¬í¦Û°Ê¤U¤@ÃD
+                // ç­”å°å¾Œ 1.5 ç§’è‡ªå‹•ä¸‹ä¸€é¡Œ
                 setTimeout(newQuizQuestion, 1500);
             } else {
-                feedback.innerText = `¦A¸Õ¤@¦¸¡I(´£¥Ü: ${currentQuizWord.en.charAt(0)}...)`;
+                feedback.innerText = `å†è©¦ä¸€æ¬¡ï¼(æç¤º: ${currentQuizWord.en.charAt(0)}...)`;
                 feedback.className = "feedback wrong";
             }
         }
         
-        // Åı«ö¤U Enter ¤]¯à°e¥Xµª®×
+        // è®“æŒ‰ä¸‹ Enter ä¹Ÿèƒ½é€å‡ºç­”æ¡ˆ
         document.getElementById("answer-input").addEventListener("keypress", function(event) {
             if (event.key === "Enter") {
                 checkAnswer();
@@ -213,4 +213,5 @@
         });
     </script>
 </body>
+
 </html>
