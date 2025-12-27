@@ -39,6 +39,18 @@
         button:hover { transform: scale(1.05); }
         button.active { background-color: #2E8B57; border: 2px solid #fff; box-shadow: 0 0 5px rgba(0,0,0,0.2); }
         
+        /* 發音按鈕特別樣式 */
+        .speak-btn {
+            background-color: #2196F3; /* 藍色 */
+            font-size: 18px;
+            padding: 10px 25px;
+            margin-top: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .speak-btn:active { background-color: #1976D2; }
+
         /* Flashcard Styles */
         .card {
             background: #ffeb3b;
@@ -54,7 +66,8 @@
             justify-content: center;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             transition: transform 0.3s;
-            user-select: none; /* 防止選取文字 */
+            user-select: none;
+            position: relative;
         }
         .card:active { transform: scale(0.95); }
         
@@ -76,20 +89,18 @@
         .correct { color: green; }
         .wrong { color: red; }
         .score-board { margin-top: 20px; font-size: 18px; color: #555; }
-
-        /* Hidden elements */
         .hidden { display: none; }
     </style>
 </head>
 <body>
 
-    <h1> 單字大挑戰 </h1>
-    <p style="text-align: center; color: #666; font-size: 0.9em;">為四年級設計的專屬練習</p>
+    <h1>🌟 單字大挑戰 🌟</h1>
+    <p style="text-align: center; color: #666; font-size: 0.9em;">點擊藍色按鈕聽發音</p>
 
     <div class="container">
         <div class="mode-switch">
-            <button onclick="setMode('study')" id="btn-study" class="active">?? 練習模式</button>
-            <button onclick="setMode('quiz')" id="btn-quiz">?? 考試模式</button>
+            <button onclick="setMode('study')" id="btn-study" class="active">📖 練習模式</button>
+            <button onclick="setMode('quiz')" id="btn-quiz">🎮 考試模式</button>
         </div>
 
         <div id="study-area">
@@ -97,7 +108,9 @@
             <div class="card" onclick="flipCard()" id="flashcard">
                 載入中...
             </div>
-            <button onclick="nextCard()">下一個單字 ??</button>
+            <button onclick="speakCurrentWord()" class="speak-btn">🔊 聽發音</button>
+            <br><br>
+            <button onclick="nextCard()">下一個單字 ➡️</button>
         </div>
 
         <div id="quiz-area" class="hidden">
@@ -108,7 +121,7 @@
             <div class="input-group">
                 <input type="text" id="answer-input" placeholder="在這裡打字..." autocomplete="off">
             </div>
-            <button onclick="checkAnswer()">送出答案 ?</button>
+            <button onclick="checkAnswer()">送出答案 ✅</button>
             <div class="feedback" id="feedback"></div>
             <div class="score-board">
                 分數: <span id="score">0</span>
@@ -117,7 +130,7 @@
     </div>
 
     <script>
-        
+        // 單字資料庫
         const vocabList = [
             { ch: "聖誕節", en: "Christmas" },
             { ch: "飲食", en: "diet" }, 
@@ -145,17 +158,34 @@
             document.getElementById('btn-study').classList.toggle('active', mode === 'study');
             document.getElementById('btn-quiz').classList.toggle('active', mode === 'quiz');
             
-            // 切換模式時，如果是去考試，就重新聚焦輸入框
             if(mode === 'quiz') {
                 document.getElementById('answer-input').focus();
             }
+        }
+
+        // --- 發音功能 (Web Speech API) ---
+        function speak(text) {
+            // 檢查瀏覽器是否支援
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US'; // 設定為美式英文
+                utterance.rate = 0.8;     // 語速稍慢，適合學習
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert("抱歉，您的瀏覽器不支援發音功能。");
+            }
+        }
+
+        function speakCurrentWord() {
+            // 唸出目前練習模式的英文單字
+            speak(vocabList[currentIdx].en);
         }
 
         // --- 練習模式邏輯 ---
         function updateCard() {
             const card = document.getElementById('flashcard');
             card.innerText = vocabList[currentIdx].ch;
-            card.style.background = '#ffeb3b'; // 黃色
+            card.style.background = '#ffeb3b'; 
             isFlipped = false;
         }
 
@@ -166,7 +196,7 @@
                 card.style.background = '#ffeb3b';
             } else {
                 card.innerText = vocabList[currentIdx].en;
-                card.style.background = '#fff9c4'; // 淺黃
+                card.style.background = '#fff9c4'; 
             }
             isFlipped = !isFlipped;
         }
@@ -190,14 +220,17 @@
             const userAns = document.getElementById('answer-input').value.trim();
             const feedback = document.getElementById('feedback');
             
-            if (!userAns) return; // 防止空字串送出
+            if (!userAns) return; 
 
             if (userAns.toLowerCase() === currentQuizWord.en.toLowerCase()) {
-                feedback.innerText = "答對了！太棒了！ ";
+                feedback.innerText = "答對了！太棒了！ 🎉";
                 feedback.className = "feedback correct";
                 score += 10;
                 document.getElementById('score').innerText = score;
-                // 答對後 1.5 秒自動下一題
+                
+                // 答對時自動發音，加強記憶
+                speak(currentQuizWord.en);
+
                 setTimeout(newQuizQuestion, 1500);
             } else {
                 feedback.innerText = `再試一次！(提示: ${currentQuizWord.en.charAt(0)}...)`;
@@ -205,7 +238,6 @@
             }
         }
         
-        // 讓按下 Enter 也能送出答案
         document.getElementById("answer-input").addEventListener("keypress", function(event) {
             if (event.key === "Enter") {
                 checkAnswer();
@@ -213,5 +245,4 @@
         });
     </script>
 </body>
-
 </html>
