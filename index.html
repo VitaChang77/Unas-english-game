@@ -39,13 +39,13 @@
             transition: 0.3s;
         }
         button:hover { transform: scale(1.05); }
+        button:disabled { background-color: #ccc; cursor: not-allowed; transform: none; }
         button.active { background-color: #2E8B57; border: 2px solid #fff; box-shadow: 0 0 5px rgba(0,0,0,0.2); }
         
         /* 重新開始按鈕 */
-        .restart-btn {
-            background-color: #FF9800;
-        }
+        .restart-btn { background-color: #FF9800; }
 
+        /* 發音按鈕 */
         .speak-btn {
             background-color: #2196F3;
             font-size: 18px;
@@ -56,6 +56,21 @@
             justify-content: center;
         }
         .speak-btn:active { background-color: #1976D2; }
+
+        /* 提示按鈕 */
+        .hint-btn {
+            background-color: #FFC107; /* 黃色 */
+            color: #333;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .hint-display {
+            color: #E65100;
+            font-weight: bold;
+            font-size: 20px;
+            min-height: 30px; /* 預留高度避免跳動 */
+            margin-top: 5px;
+        }
 
         /* Flashcard Styles */
         .card {
@@ -108,9 +123,7 @@
         .hidden { display: none; }
         
         /* 結算畫面 */
-        .result-screen {
-            text-align: center;
-        }
+        .result-screen { text-align: center; }
         .final-score {
             font-size: 48px;
             color: #E91E63;
@@ -122,7 +135,7 @@
 <body>
 
     <h1>🌟 單字大挑戰 🌟</h1>
-    <div class="subtitle">範圍：第10週 ~ 第17週 (隨機10題版)</div>
+    <div class="subtitle">範圍：第10週 ~ 第17週 (隨機10題 + 提示版)</div>
 
     <div class="container">
         <div class="mode-switch">
@@ -156,6 +169,11 @@
                     <input type="text" id="answer-input" placeholder="輸入英文..." autocomplete="off">
                 </div>
                 
+                <button onclick="useHint()" id="btn-hint" class="hint-btn">💡 提示 (剩餘: <span id="hint-count">5</span>)</button>
+                <div id="hint-display" class="hint-display"></div>
+
+                <hr style="border:0; border-top:1px solid #eee; margin: 20px 0;">
+
                 <button onclick="checkAnswer()">送出答案 ✅</button>
                 <div class="feedback" id="feedback"></div>
             </div>
@@ -165,76 +183,44 @@
                 <div>你的分數是</div>
                 <div class="final-score" id="final-score">100</div>
                 <p id="comment">太厲害了！</p>
-                <button onclick="startNewQuizRound()" class="restart-btn">🔄 再考一次 (換一組題目)</button>
+                <button onclick="startNewQuizRound()" class="restart-btn">🔄 再考一次 (提示次數重置)</button>
             </div>
         </div>
     </div>
 
     <script>
-        // 完整單字庫 (已調整大小寫)
+        // 完整單字庫 (維持大小寫設定)
         const vocabList = [
             // 第10週
-            { ch: "好的", en: "nice" }, 
-            { ch: "製作", en: "make" }, 
-            { ch: "無尾熊", en: "koala" },
-            { ch: "和", en: "and" }, 
-            { ch: "蠟筆", en: "crayon" }, 
-            { ch: "餐桌", en: "table" },
+            { ch: "好的", en: "nice" }, { ch: "製作", en: "make" }, { ch: "無尾熊", en: "koala" },
+            { ch: "和", en: "and" }, { ch: "蠟筆", en: "crayon" }, { ch: "餐桌", en: "table" },
             { ch: "肥皂", en: "soap" }, 
             // 第11週
-            { ch: "測驗/考試", en: "test" }, 
-            { ch: "快樂的", en: "happy" },
-            { ch: "傷心的", en: "sad" }, 
-            { ch: "蜥蜴", en: "lizard" }, 
-            { ch: "蝴蝶", en: "butterfly" },
-            { ch: "石頭", en: "stone" }, 
+            { ch: "測驗/考試", en: "test" }, { ch: "快樂的", en: "happy" }, { ch: "傷心的", en: "sad" }, 
+            { ch: "蜥蜴", en: "lizard" }, { ch: "蝴蝶", en: "butterfly" }, { ch: "石頭", en: "stone" }, 
             // 第12週
-            { ch: "紫色", en: "purple" }, 
-            { ch: "粉紅色", en: "pink" },
-            { ch: "好的 (健康/天氣)", en: "fine" }, 
-            { ch: "走", en: "go" }, 
-            { ch: "晚餐", en: "dinner" },
-            { ch: "錢包", en: "purse" }, 
+            { ch: "紫色", en: "purple" }, { ch: "粉紅色", en: "pink" }, { ch: "好的 (健康/天氣)", en: "fine" }, 
+            { ch: "走", en: "go" }, { ch: "晚餐", en: "dinner" }, { ch: "錢包", en: "purse" }, 
             { ch: "推車", en: "cart" }, 
             // 第13週
-            { ch: "灰色", en: "gray" },
-            { ch: "杯子", en: "cup" }, 
-            { ch: "球棒/蝙蝠", en: "bat" }, 
-            { ch: "棒球帽", en: "cap" },
-            { ch: "公車", en: "bus" }, 
-            { ch: "捷運", en: "MRT" },  // 縮寫保留大寫
-            { ch: "高鐵", en: "HSR" },  // 縮寫保留大寫
+            { ch: "灰色", en: "gray" }, { ch: "杯子", en: "cup" }, { ch: "球棒/蝙蝠", en: "bat" }, 
+            { ch: "棒球帽", en: "cap" }, { ch: "公車", en: "bus" }, { ch: "捷運", en: "MRT" }, 
+            { ch: "高鐵", en: "HSR" }, 
             // 第14週
-            { ch: "眼睛", en: "eye" }, 
-            { ch: "臉", en: "face" }, 
-            { ch: "嘴唇", en: "lip" },
-            { ch: "寵物", en: "pet" }, 
-            { ch: "工作", en: "work" }, 
-            { ch: "嘴巴", en: "mouth" },
+            { ch: "眼睛", en: "eye" }, { ch: "臉", en: "face" }, { ch: "嘴唇", en: "lip" },
+            { ch: "寵物", en: "pet" }, { ch: "工作", en: "work" }, { ch: "嘴巴", en: "mouth" },
             { ch: "搖動", en: "shake" }, 
             // 第15週
-            { ch: "頭髮", en: "hair" }, 
-            { ch: "鼻子", en: "nose" },
-            { ch: "耳朵", en: "ear" }, 
-            { ch: "在...後", en: "after" }, 
-            { ch: "飲食/節食", en: "diet" },
-            { ch: "盤子", en: "plate" }, 
-            { ch: "聖誕節", en: "Christmas" }, // 專有名詞保留大寫
+            { ch: "頭髮", en: "hair" }, { ch: "鼻子", en: "nose" }, { ch: "耳朵", en: "ear" }, 
+            { ch: "在...後", en: "after" }, { ch: "飲食/節食", en: "diet" }, { ch: "盤子", en: "plate" }, 
+            { ch: "聖誕節", en: "Christmas" }, 
             // 第16週
-            { ch: "頭", en: "head" }, 
-            { ch: "湯", en: "soup" }, 
-            { ch: "與...一起", en: "with" }, 
-            { ch: "機器人", en: "robot" },
-            { ch: "洋娃娃", en: "doll" }, 
-            { ch: "湯匙", en: "spoon" }, 
+            { ch: "頭", en: "head" }, { ch: "湯", en: "soup" }, { ch: "與...一起", en: "with" }, 
+            { ch: "機器人", en: "robot" }, { ch: "洋娃娃", en: "doll" }, { ch: "湯匙", en: "spoon" }, 
             { ch: "叉子", en: "fork" },
             // 第17週
-            { ch: "腳", en: "foot" }, 
-            { ch: "時鐘", en: "clock" }, 
-            { ch: "警察", en: "police officer" },
-            { ch: "橡皮擦", en: "eraser" }, 
-            { ch: "膠水", en: "glue" }, 
-            { ch: "刀子", en: "knife" }
+            { ch: "腳", en: "foot" }, { ch: "時鐘", en: "clock" }, { ch: "警察", en: "police officer" },
+            { ch: "橡皮擦", en: "eraser" }, { ch: "膠水", en: "glue" }, { ch: "刀子", en: "knife" }
         ];
 
         // 練習模式變數
@@ -246,6 +232,10 @@
         let quizIndex = 0;      
         let quizScore = 0;
         let isQuizFinished = false;
+        
+        // 提示功能變數
+        let hintsRemaining = 5;
+        let isHintUsedThisQuestion = false;
 
         // 初始化
         window.onload = function() {
@@ -279,10 +269,7 @@
                 window.speechSynthesis.speak(utterance);
             }
         }
-
-        function speakCurrentWord() {
-            speak(vocabList[studyIdx].en);
-        }
+        function speakCurrentWord() { speak(vocabList[studyIdx].en); }
 
         // --- 練習模式邏輯 ---
         function updateStudyCard() {
@@ -315,7 +302,7 @@
             updateStudyCard();
         }
 
-        // --- 考試模式邏輯 (10題制) ---
+        // --- 考試模式邏輯 ---
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -328,13 +315,15 @@
             document.getElementById('quiz-result').classList.add('hidden');
             document.getElementById('quiz-playing').classList.remove('hidden');
 
-            // 複製一份完整名單來洗牌
             let shuffled = shuffleArray([...vocabList]); 
             quizQueue = shuffled.slice(0, 10); 
 
             quizIndex = 0;
             quizScore = 0;
             isQuizFinished = false;
+            
+            // 重置提示次數
+            hintsRemaining = 5;
             
             updateQuizUI();
             showQuizQuestion();
@@ -345,13 +334,54 @@
             document.getElementById('quiz-question').innerText = currentWord.ch;
             document.getElementById('answer-input').value = '';
             document.getElementById('feedback').innerText = '';
+            document.getElementById('hint-display').innerText = ''; // 清空提示文字
             document.getElementById('answer-input').focus();
+            
+            // 重置該題是否已提示
+            isHintUsedThisQuestion = false;
+            updateHintButtonState(); // 更新按鈕狀態
             updateQuizUI();
         }
 
         function updateQuizUI() {
             document.getElementById('q-progress').innerText = quizIndex + 1;
             document.getElementById('score').innerText = quizScore;
+            document.getElementById('hint-count').innerText = hintsRemaining;
+        }
+
+        // --- 新增：提示功能 ---
+        function useHint() {
+            if (hintsRemaining > 0 && !isHintUsedThisQuestion) {
+                hintsRemaining--; // 扣除次數
+                isHintUsedThisQuestion = true; // 標記這題用過了
+                
+                const word = quizQueue[quizIndex].en;
+                // 產生提示文字：取頭跟尾
+                let hintText = "";
+                if (word.length <= 2) {
+                    hintText = word; // 如果單字太短(如Go)，直接顯示
+                } else {
+                    hintText = `${word.charAt(0)} ... ${word.charAt(word.length - 1)}`;
+                }
+                
+                document.getElementById('hint-display').innerText = `提示: ${hintText}`;
+                updateQuizUI(); // 更新剩餘次數顯示
+                updateHintButtonState(); // 讓按鈕變灰
+                document.getElementById('answer-input').focus(); // 焦點回到輸入框方便打字
+            }
+        }
+
+        function updateHintButtonState() {
+            const btn = document.getElementById('btn-hint');
+            // 如果沒次數了，或者這題已經用過提示了，就禁用按鈕
+            if (hintsRemaining <= 0 || isHintUsedThisQuestion) {
+                btn.disabled = true;
+                if (hintsRemaining <= 0) btn.innerText = "💡 提示 (已用完)";
+                else btn.innerText = "💡 提示 (已顯示)";
+            } else {
+                btn.disabled = false;
+                btn.innerText = `💡 提示 (剩餘: ${hintsRemaining})`;
+            }
         }
 
         function checkAnswer() {
@@ -363,13 +393,11 @@
             
             if (!userAns) return; 
 
-            // 不分大小寫比對 (輸入 Happy 或 happy 算對，但正確答案顯示會是設定好的小寫)
             if (userAns.toLowerCase() === currentWord.en.toLowerCase()) {
                 feedback.innerText = "Correct! ✅";
                 feedback.className = "feedback correct";
                 quizScore += 10;
                 speak(currentWord.en);
-                
                 setTimeout(nextQuestion, 1200);
             } else {
                 feedback.innerText = `Oops! 答案是: ${currentWord.en}`;
