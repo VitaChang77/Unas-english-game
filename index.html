@@ -171,26 +171,70 @@
     </div>
 
     <script>
-        // 完整單字庫
+        // 完整單字庫 (已調整大小寫)
         const vocabList = [
-            { ch: "好的", en: "Nice" }, { ch: "製作", en: "Make" }, { ch: "無尾熊", en: "Koala" },
-            { ch: "和", en: "And" }, { ch: "蠟筆", en: "Crayon" }, { ch: "餐桌", en: "Table" },
-            { ch: "肥皂", en: "Soap" }, { ch: "測驗/考試", en: "Test" }, { ch: "快樂的", en: "Happy" },
-            { ch: "傷心的", en: "Sad" }, { ch: "蜥蜴", en: "Lizard" }, { ch: "蝴蝶", en: "Butterfly" },
-            { ch: "石頭", en: "Stone" }, { ch: "紫色", en: "Purple" }, { ch: "粉紅色", en: "Pink" },
-            { ch: "好的 (健康/天氣)", en: "Fine" }, { ch: "走", en: "Go" }, { ch: "晚餐", en: "Dinner" },
-            { ch: "錢包", en: "Purse" }, { ch: "推車", en: "Cart" }, { ch: "灰色", en: "Gray" },
-            { ch: "杯子", en: "Cup" }, { ch: "球棒/蝙蝠", en: "Bat" }, { ch: "棒球帽", en: "Cap" },
-            { ch: "公車", en: "Bus" }, { ch: "捷運", en: "MRT" }, { ch: "高鐵", en: "HSR" },
-            { ch: "眼睛", en: "Eye" }, { ch: "臉", en: "Face" }, { ch: "嘴唇", en: "Lip" },
-            { ch: "寵物", en: "Pet" }, { ch: "工作", en: "Work" }, { ch: "嘴巴", en: "Mouth" },
-            { ch: "搖動", en: "Shake" }, { ch: "頭髮", en: "Hair" }, { ch: "鼻子", en: "Nose" },
-            { ch: "耳朵", en: "Ear" }, { ch: "在...後", en: "After" }, { ch: "飲食/節食", en: "Diet" },
-            { ch: "盤子", en: "Plate" }, { ch: "聖誕節", en: "Christmas" }, { ch: "頭", en: "Head" },
-            { ch: "湯", en: "Soup" }, { ch: "與...一起", en: "With" }, { ch: "機器人", en: "Robot" },
-            { ch: "洋娃娃", en: "Doll" }, { ch: "湯匙", en: "Spoon" }, { ch: "叉子", en: "Fork" },
-            { ch: "腳", en: "Foot" }, { ch: "時鐘", en: "Clock" }, { ch: "警察", en: "Police officer" },
-            { ch: "橡皮擦", en: "Eraser" }, { ch: "膠水", en: "Glue" }, { ch: "刀子", en: "Knife" }
+            // 第10週
+            { ch: "好的", en: "nice" }, 
+            { ch: "製作", en: "make" }, 
+            { ch: "無尾熊", en: "koala" },
+            { ch: "和", en: "and" }, 
+            { ch: "蠟筆", en: "crayon" }, 
+            { ch: "餐桌", en: "table" },
+            { ch: "肥皂", en: "soap" }, 
+            // 第11週
+            { ch: "測驗/考試", en: "test" }, 
+            { ch: "快樂的", en: "happy" },
+            { ch: "傷心的", en: "sad" }, 
+            { ch: "蜥蜴", en: "lizard" }, 
+            { ch: "蝴蝶", en: "butterfly" },
+            { ch: "石頭", en: "stone" }, 
+            // 第12週
+            { ch: "紫色", en: "purple" }, 
+            { ch: "粉紅色", en: "pink" },
+            { ch: "好的 (健康/天氣)", en: "fine" }, 
+            { ch: "走", en: "go" }, 
+            { ch: "晚餐", en: "dinner" },
+            { ch: "錢包", en: "purse" }, 
+            { ch: "推車", en: "cart" }, 
+            // 第13週
+            { ch: "灰色", en: "gray" },
+            { ch: "杯子", en: "cup" }, 
+            { ch: "球棒/蝙蝠", en: "bat" }, 
+            { ch: "棒球帽", en: "cap" },
+            { ch: "公車", en: "bus" }, 
+            { ch: "捷運", en: "MRT" },  // 縮寫保留大寫
+            { ch: "高鐵", en: "HSR" },  // 縮寫保留大寫
+            // 第14週
+            { ch: "眼睛", en: "eye" }, 
+            { ch: "臉", en: "face" }, 
+            { ch: "嘴唇", en: "lip" },
+            { ch: "寵物", en: "pet" }, 
+            { ch: "工作", en: "work" }, 
+            { ch: "嘴巴", en: "mouth" },
+            { ch: "搖動", en: "shake" }, 
+            // 第15週
+            { ch: "頭髮", en: "hair" }, 
+            { ch: "鼻子", en: "nose" },
+            { ch: "耳朵", en: "ear" }, 
+            { ch: "在...後", en: "after" }, 
+            { ch: "飲食/節食", en: "diet" },
+            { ch: "盤子", en: "plate" }, 
+            { ch: "聖誕節", en: "Christmas" }, // 專有名詞保留大寫
+            // 第16週
+            { ch: "頭", en: "head" }, 
+            { ch: "湯", en: "soup" }, 
+            { ch: "與...一起", en: "with" }, 
+            { ch: "機器人", en: "robot" },
+            { ch: "洋娃娃", en: "doll" }, 
+            { ch: "湯匙", en: "spoon" }, 
+            { ch: "叉子", en: "fork" },
+            // 第17週
+            { ch: "腳", en: "foot" }, 
+            { ch: "時鐘", en: "clock" }, 
+            { ch: "警察", en: "police officer" },
+            { ch: "橡皮擦", en: "eraser" }, 
+            { ch: "膠水", en: "glue" }, 
+            { ch: "刀子", en: "knife" }
         ];
 
         // 練習模式變數
@@ -198,8 +242,8 @@
         let isFlipped = false;
 
         // 考試模式變數
-        let quizQueue = [];     // 存放當前這輪的10個單字
-        let quizIndex = 0;      // 目前考到第幾個 (0-9)
+        let quizQueue = [];     
+        let quizIndex = 0;      
         let quizScore = 0;
         let isQuizFinished = false;
 
@@ -217,7 +261,6 @@
             document.getElementById('btn-quiz').classList.toggle('active', mode === 'quiz');
             
             if(mode === 'quiz') {
-                // 如果是第一次進來或已經考完了，就重新開始
                 if (quizQueue.length === 0 || isQuizFinished) {
                     startNewQuizRound();
                 } else {
@@ -272,9 +315,7 @@
             updateStudyCard();
         }
 
-        // --- 考試模式邏輯 (新版：10題制) ---
-        
-        // 洗牌演算法 (Fisher-Yates)
+        // --- 考試模式邏輯 (10題制) ---
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -284,21 +325,17 @@
         }
 
         function startNewQuizRound() {
-            // 1. 隱藏結算，顯示考題
             document.getElementById('quiz-result').classList.add('hidden');
             document.getElementById('quiz-playing').classList.remove('hidden');
 
-            // 2. 隨機選 10 個字
-            // 複製一份完整名單來洗牌，以免影響練習模式順序
+            // 複製一份完整名單來洗牌
             let shuffled = shuffleArray([...vocabList]); 
-            quizQueue = shuffled.slice(0, 10); // 取前10個
+            quizQueue = shuffled.slice(0, 10); 
 
-            // 3. 重置分數與題號
             quizIndex = 0;
             quizScore = 0;
             isQuizFinished = false;
             
-            // 4. 更新畫面
             updateQuizUI();
             showQuizQuestion();
         }
@@ -326,20 +363,17 @@
             
             if (!userAns) return; 
 
+            // 不分大小寫比對 (輸入 Happy 或 happy 算對，但正確答案顯示會是設定好的小寫)
             if (userAns.toLowerCase() === currentWord.en.toLowerCase()) {
-                // 答對
                 feedback.innerText = "Correct! ✅";
                 feedback.className = "feedback correct";
                 quizScore += 10;
                 speak(currentWord.en);
                 
-                // 延遲後進入下一題
                 setTimeout(nextQuestion, 1200);
             } else {
-                // 答錯
                 feedback.innerText = `Oops! 答案是: ${currentWord.en}`;
                 feedback.className = "feedback wrong";
-                // 為了讓孩子看清楚正確答案，稍微停久一點 (2秒) 再下一題
                 setTimeout(nextQuestion, 2000);
             }
         }
@@ -357,10 +391,8 @@
             isQuizFinished = true;
             document.getElementById('quiz-playing').classList.add('hidden');
             document.getElementById('quiz-result').classList.remove('hidden');
-            
             document.getElementById('final-score').innerText = quizScore;
             
-            // 根據分數給評語
             const comment = document.getElementById('comment');
             if (quizScore === 100) comment.innerText = "太神啦！全對！🌟";
             else if (quizScore >= 80) comment.innerText = "很棒喔！繼續保持！👍";
