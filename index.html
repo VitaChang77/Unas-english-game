@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>國小四年級英文單字大挑戰</title>
+    <title>四年級下學期 英文單字大挑戰</title>
     <style>
         body {
             font-family: 'Comic Sans MS', 'Microsoft JhengHei', sans-serif;
@@ -27,22 +27,24 @@
             position: relative;
         }
 
-        /* 題庫選擇器 */
+        /* 週次選擇器 */
         .category-selector {
             margin-bottom: 20px;
-            padding: 10px;
+            padding: 15px;
             background: #e3f2fd;
             border-radius: 10px;
             border: 2px solid #90caf9;
         }
         select {
-            padding: 8px;
-            font-size: 16px;
+            padding: 10px;
+            font-size: 18px;
             border-radius: 5px;
             border: 1px solid #ccc;
             width: 100%;
             font-family: 'Microsoft JhengHei', sans-serif;
             cursor: pointer;
+            font-weight: bold;
+            color: #1565C0;
         }
 
         .mode-switch { margin-bottom: 20px; }
@@ -79,7 +81,7 @@
             color: #333;
             padding: 30px;
             border-radius: 15px;
-            font-size: 28px;
+            font-size: 32px;
             margin: 20px 0;
             cursor: pointer;
             min-height: 120px;
@@ -90,6 +92,7 @@
             transition: transform 0.3s;
             user-select: none;
             word-wrap: break-word;
+            font-weight: bold;
         }
         .card:active { transform: scale(0.95); }
 
@@ -97,11 +100,12 @@
         .input-group { margin: 20px 0; }
         input[type="text"] {
             padding: 15px;
-            font-size: 20px;
+            font-size: 24px;
             border: 2px solid #ddd;
             border-radius: 10px;
             width: 70%;
             text-align: center;
+            font-family: 'Comic Sans MS', sans-serif;
         }
         .hint-btn {
             background-color: #FFC107;
@@ -109,34 +113,11 @@
             font-weight: bold;
             margin-top: 10px;
             border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer;
+            font-size: 16px;
         }
-        .hint-btn:disabled { background-color: #ccc; cursor: not-allowed; }
-        .hint-display { color: #E65100; font-weight: bold; font-size: 20px; min-height: 30px; margin-top: 5px; }
-        .submit-btn { background-color: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-size: 18px; }
-
-        /* --- 選擇題 UI --- */
-        .options-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        .option-btn {
-            background-color: #fff;
-            border: 2px solid #2196F3;
-            color: #333;
-            padding: 20px 10px;
-            font-size: 20px;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: 0.2s;
-            font-family: 'Comic Sans MS', sans-serif;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        .option-btn:hover { background-color: #e3f2fd; transform: translateY(-2px); }
-        .option-btn:active { transform: translateY(0); }
-        .option-btn.correct { background-color: #4CAF50; color: white; border-color: #4CAF50; }
-        .option-btn.wrong { background-color: #F44336; color: white; border-color: #F44336; opacity: 0.6; }
+        .hint-btn:disabled { background-color: #e0e0e0; color: #9e9e9e; cursor: not-allowed; }
+        .hint-display { color: #E65100; font-weight: bold; font-size: 24px; min-height: 35px; margin-top: 10px; letter-spacing: 2px; }
+        .submit-btn { background-color: #4CAF50; color: white; border: none; padding: 12px 24px; border-radius: 10px; cursor: pointer; font-size: 18px; width: 80%; }
 
         /* 通用反饋 */
         .feedback { min-height: 30px; margin-top: 15px; font-weight: bold; font-size: 18px; }
@@ -152,24 +133,38 @@
 </head>
 <body>
 
-    <h1>🌟 單字大挑戰 🌟</h1>
+    <h1>🌟 下學期單字挑戰 🌟</h1>
     
     <div class="container">
         <div class="category-selector">
-            <label for="category-select">📚 請選擇題庫：</label>
-            <select id="category-select" onchange="changeCategory()">
-                <option value="week10_17">📅 第10週 ~ 第17週 (測驗: 選擇題)</option>
-                <option value="food_fruit">🍎 食物與水果 (測驗: 拼字練習)</option>
+            <label for="week-select" style="display:block; margin-bottom:8px; font-weight:bold; color:#333;">📅 選擇你要練習的週次：</label>
+            <select id="week-select" onchange="changeWeek()">
+                <option value="week2">第 2 週</option>
+                <option value="week3">第 3 週</option>
+                <option value="week4">第 4 週</option>
+                <option value="week5">第 5 週</option>
+                <option value="week6">第 6 週</option>
+                <option value="week7">第 7 週</option>
+                <option value="week8">第 8 週</option>
+                <option value="week9">第 9 週</option>
+                <option value="week10">第 10 週</option>
+                <option value="week11">第 11 週</option>
+                <option value="week12">第 12 週</option>
+                <option value="week13">第 13 週</option>
+                <option value="week14">第 14 週</option>
+                <option value="week15">第 15 週</option>
+                <option value="week16">第 16 週</option>
+                <option value="week17">第 17 週</option>
             </select>
         </div>
 
         <div class="mode-switch">
             <button onclick="setMode('study')" id="btn-study" class="mode-btn active">📖 練習模式</button>
-            <button onclick="setMode('quiz')" id="btn-quiz" class="mode-btn">🎮 測驗模式</button>
+            <button onclick="setMode('quiz')" id="btn-quiz" class="mode-btn">🎮 拼字測驗</button>
         </div>
 
         <div id="study-area">
-            <div style="color:#888; font-size:14px;">本區單字數: <span id="current-word-num">1</span> / <span id="total-words"></span></div>
+            <div style="color:#888; font-size:14px;">本週單字進度: <span id="current-word-num">1</span> / <span id="total-words"></span></div>
             <div class="card" onclick="flipCard()" id="flashcard">
                 載入中...
             </div>
@@ -190,22 +185,16 @@
                     <span id="quiz-question">題目</span>
                 </div>
                 
-                <div id="ui-spelling" class="hidden">
-                    <div style="color: #666; font-size: 14px;">請輸入英文單字：</div>
-                    <div class="input-group">
-                        <input type="text" id="answer-input" placeholder="輸入英文..." autocomplete="off">
-                    </div>
-                    <button onclick="useHint()" id="btn-hint" class="hint-btn">💡 提示 (剩餘: 5)</button>
-                    <div id="hint-display" class="hint-display"></div>
-                    <br>
-                    <button onclick="checkSpellingAnswer()" class="submit-btn">送出答案 ✅</button>
+                <div style="color: #666; font-size: 14px;">請輸入英文單字：</div>
+                <div class="input-group">
+                    <input type="text" id="answer-input" placeholder="輸入英文..." autocomplete="off">
                 </div>
-
-                <div id="ui-choice" class="hidden">
-                    <div style="color: #666; font-size: 14px;">請點擊正確的單字：</div>
-                    <div class="options-grid" id="options-container">
-                        </div>
-                </div>
+                
+                <button onclick="useHint()" id="btn-hint" class="hint-btn">💡 給我第一個字母提示</button>
+                <div id="hint-display" class="hint-display"></div>
+                
+                <br>
+                <button onclick="checkAnswer()" class="submit-btn">送出答案 ✅</button>
                 
                 <div class="feedback" id="feedback"></div>
             </div>
@@ -221,38 +210,84 @@
     </div>
 
     <script>
-        // --- 資料庫區 ---
-        const db_week10_17 = [
-            { ch: "好的", en: "nice" }, { ch: "製作", en: "make" }, { ch: "無尾熊", en: "koala" },
-            { ch: "和", en: "and" }, { ch: "蠟筆", en: "crayon" }, { ch: "餐桌", en: "table" }, { ch: "肥皂", en: "soap" }, 
-            { ch: "測驗/考試", en: "test" }, { ch: "快樂的", en: "happy" }, { ch: "傷心的", en: "sad" }, 
-            { ch: "蜥蜴", en: "lizard" }, { ch: "蝴蝶", en: "butterfly" }, { ch: "石頭", en: "stone" }, 
-            { ch: "紫色", en: "purple" }, { ch: "粉紅色", en: "pink" }, { ch: "好的 (健康/天氣)", en: "fine" }, 
-            { ch: "走", en: "go" }, { ch: "晚餐", en: "dinner" }, { ch: "錢包", en: "purse" }, { ch: "推車", en: "cart" }, 
-            { ch: "灰色", en: "gray" }, { ch: "杯子", en: "cup" }, { ch: "球棒/蝙蝠", en: "bat" }, 
-            { ch: "棒球帽", en: "cap" }, { ch: "公車", en: "bus" }, { ch: "捷運", en: "MRT" }, { ch: "高鐵", en: "HSR" }, 
-            { ch: "眼睛", en: "eye" }, { ch: "臉", en: "face" }, { ch: "嘴唇", en: "lip" },
-            { ch: "寵物", en: "pet" }, { ch: "工作", en: "work" }, { ch: "嘴巴", en: "mouth" }, { ch: "搖動", en: "shake" }, 
-            { ch: "頭髮", en: "hair" }, { ch: "鼻子", en: "nose" }, { ch: "耳朵", en: "ear" }, 
-            { ch: "在...後", en: "after" }, { ch: "飲食/節食", en: "diet" }, { ch: "盤子", en: "plate" }, 
-            { ch: "聖誕節", en: "Christmas" }, 
-            { ch: "頭", en: "head" }, { ch: "湯", en: "soup" }, { ch: "與...一起", en: "with" }, 
-            { ch: "機器人", en: "robot" }, { ch: "洋娃娃", en: "doll" }, { ch: "湯匙", en: "spoon" }, { ch: "叉子", en: "fork" },
-            { ch: "腳", en: "foot" }, { ch: "時鐘", en: "clock" }, { ch: "警察", en: "police officer" },
-            { ch: "橡皮擦", en: "eraser" }, { ch: "膠水", en: "glue" }, { ch: "刀子", en: "knife" }
-        ];
-
-        const db_food_fruit = [
-            { ch: "蛋糕", en: "cake" }, { ch: "漢堡 (複數)", en: "hamburgers" },
-            { ch: "熱狗 (複數)", en: "hot dogs" }, { ch: "冰淇淋", en: "ice cream" },
-            { ch: "披薩", en: "pizza" }, { ch: "米飯", en: "rice" },
-            { ch: "三明治 (複數)", en: "sandwiches" },
-            { ch: "蘋果 (複數)", en: "apples" }, { ch: "香蕉 (複數)", en: "bananas" },
-            { ch: "柳橙 (複數)", en: "oranges" }, { ch: "西瓜 (複數)", en: "watermelons" }
-        ];
+        // --- 資料庫區 (四年級下學期 Week 2 - Week 17) ---
+        // 注意：為了考試順利，「we 我們/our 我們的」已經幫您拆分成兩個單字方便作答
+        // 「mask 口罩/面具」則統整為同一個中文題目
+        const wordData = {
+            week2: [
+                {ch: "三十", en: "thirty"}, {ch: "四十", en: "forty"}, {ch: "五十", en: "fifty"}, 
+                {ch: "我們", en: "we"}, {ch: "我們的", en: "our"}, {ch: "地球", en: "earth"}, 
+                {ch: "城市", en: "city"}, {ch: "咖啡", en: "coffee"}
+            ],
+            week3: [
+                {ch: "六十", en: "sixty"}, {ch: "七十", en: "seventy"}, {ch: "八十", en: "eighty"}, 
+                {ch: "小的", en: "small"}, {ch: "動物", en: "animal"}, {ch: "數字", en: "number"}, {ch: "布丁", en: "pudding"}
+            ],
+            week4: [
+                {ch: "九十", en: "ninety"}, {ch: "百", en: "hundred"}, {ch: "我們 (受格)", en: "us"}, 
+                {ch: "蛇", en: "snake"}, {ch: "熊貓", en: "panda"}, {ch: "給", en: "give"}, 
+                {ch: "手套", en: "glove"}, {ch: "連指手套", en: "mitten"}
+            ],
+            week5: [
+                {ch: "如何", en: "how"}, {ch: "誰", en: "who"}, {ch: "風", en: "wind"}, 
+                {ch: "拿取", en: "take"}, {ch: "浴缸", en: "tub"}, {ch: "汽水", en: "soda"}, 
+                {ch: "老虎", en: "tiger"}, {ch: "學生", en: "student"}, {ch: "小河", en: "river"}
+            ],
+            week6: [
+                {ch: "鈴", en: "bell"}, {ch: "千", en: "thousand"}, {ch: "空氣", en: "air"}, 
+                {ch: "雞", en: "chicken"}, {ch: "薯條", en: "French fries"}, {ch: "橘子", en: "tangerine"}, {ch: "左邊", en: "left"}
+            ],
+            week7: [
+                {ch: "外套", en: "coat"}, {ch: "太陽", en: "sun"}, {ch: "雲", en: "cloud"}, 
+                {ch: "每一", en: "every"}, {ch: "漢堡", en: "hamburger"}, {ch: "顧客", en: "customer"}, {ch: "右邊/正確的", en: "right"}
+            ],
+            week8: [
+                {ch: "雪人", en: "snowman"}, {ch: "下雪的", en: "snowy"}, {ch: "何時", en: "when"}, 
+                {ch: "我的", en: "my"}, {ch: "停", en: "stop"}, {ch: "力量", en: "power"}, {ch: "餐巾", en: "napkin"}
+            ],
+            week9: [
+                {ch: "涼爽", en: "cool"}, {ch: "寒冷", en: "cold"}, {ch: "玩具", en: "toy"}, 
+                {ch: "鞋子", en: "shoes"}, {ch: "下午", en: "afternoon"}, {ch: "斑馬", en: "zebra"}, 
+                {ch: "胡椒", en: "pepper"}, {ch: "小時", en: "hour"}
+            ],
+            week10: [
+                {ch: "熱", en: "hot"}, {ch: "溫暖", en: "warm"}, {ch: "短襪", en: "socks"}, 
+                {ch: "早上", en: "morning"}, {ch: "晚上", en: "night"}, {ch: "袋鼠", en: "kangaroo"}, {ch: "鬆餅", en: "waffle"}
+            ],
+            week11: [
+                {ch: "關上", en: "close"}, {ch: "打開", en: "open"}, {ch: "圖畫", en: "picture"}, 
+                {ch: "點鐘", en: "o'clock"}, {ch: "大蒜", en: "garlic"}, {ch: "洋蔥", en: "onion"}, {ch: "海報", en: "poster"}
+            ],
+            week12: [
+                {ch: "請", en: "please"}, {ch: "到", en: "to"}, {ch: "大頭針", en: "pin"}, 
+                {ch: "手", en: "hand"}, {ch: "飢餓", en: "hungry"}, {ch: "可樂", en: "coke"}, 
+                {ch: "茄子", en: "eggplant"}, {ch: "草本植物", en: "herb"}
+            ],
+            week13: [
+                {ch: "兔子", en: "rabbit"}, {ch: "公牛", en: "ox"}, {ch: "母牛", en: "cow"}, 
+                {ch: "麥克筆", en: "marker"}, {ch: "口罩/面具", en: "mask"}, {ch: "玉米", en: "corn"}, {ch: "竹子", en: "bamboo"}
+            ],
+            week14: [
+                {ch: "蜜蜂", en: "bee"}, {ch: "開始", en: "start"}, {ch: "如", en: "as"}, 
+                {ch: "尾巴", en: "tail"}, {ch: "分鐘", en: "minute"}, {ch: "蓮花", en: "lotus"}, {ch: "小黃瓜", en: "cucumber"}
+            ],
+            week15: [
+                {ch: "極小的", en: "tiny"}, {ch: "蝌蚪", en: "tadpole"}, {ch: "顯示", en: "show"}, 
+                {ch: "想要", en: "want"}, {ch: "熱狗", en: "hot dog"}, {ch: "生薑", en: "ginger"}, {ch: "巧克力", en: "chocolate"}
+            ],
+            week16: [
+                {ch: "手臂", en: "arm"}, {ch: "手指", en: "finger"}, {ch: "孵出", en: "hatch"}, 
+                {ch: "開始", en: "begin"}, {ch: "身體", en: "body"}, {ch: "喝", en: "drink"}, 
+                {ch: "甜甜圈", en: "donut"}, {ch: "龍蝦", en: "lobster"}
+            ],
+            week17: [
+                {ch: "腿", en: "leg"}, {ch: "腳趾", en: "toe"}, {ch: "前面", en: "front"}, 
+                {ch: "後面", en: "back"}, {ch: "寬", en: "wide"}, {ch: "肺", en: "lung"}, 
+                {ch: "筆記本/筆電", en: "notebook"}, {ch: "優格", en: "yogurt"}
+            ]
+        };
 
         let currentVocabList = [];
-        let currentModeType = ""; // 'spelling' or 'choice'
         
         // 練習變數
         let studyIdx = 0;
@@ -263,24 +298,20 @@
         let quizIndex = 0;      
         let quizScore = 0;
         let isQuizFinished = false;
-        let canClick = true; 
-        let hintsRemaining = 5;
         let isHintUsedThisQuestion = false;
 
-        window.onload = function() { changeCategory(); };
+        // 初始化
+        window.onload = function() { 
+            changeWeek(); 
+        };
 
-        // --- 切換題庫與考試類型 ---
-        function changeCategory() {
-            const selector = document.getElementById('category-select');
-            const choice = selector.value;
+        // --- 切換週次 ---
+        function changeWeek() {
+            const selector = document.getElementById('week-select');
+            const selectedWeek = selector.value;
             
-            if (choice === 'week10_17') {
-                currentVocabList = db_week10_17;
-                currentModeType = 'choice'; // 設定為選擇題
-            } else if (choice === 'food_fruit') {
-                currentVocabList = db_food_fruit;
-                currentModeType = 'spelling'; // 設定為拼字
-            }
+            // 載入選擇的週次單字
+            currentVocabList = wordData[selectedWeek];
 
             // 重置練習
             studyIdx = 0;
@@ -294,7 +325,7 @@
             }
         }
 
-        // --- 模式切換 (練習/考試) ---
+        // --- 模式切換 ---
         function setMode(mode) {
             document.getElementById('study-area').classList.toggle('hidden', mode !== 'study');
             document.getElementById('quiz-area').classList.toggle('hidden', mode !== 'quiz');
@@ -304,7 +335,7 @@
             if(mode === 'quiz') {
                 if (quizQueue.length === 0 || isQuizFinished) {
                     startNewQuizRound();
-                } else if (currentModeType === 'spelling') {
+                } else {
                     document.getElementById('answer-input').focus();
                 }
             }
@@ -358,30 +389,15 @@
             document.getElementById('quiz-result').classList.add('hidden');
             document.getElementById('quiz-playing').classList.remove('hidden');
 
+            // 該週所有的單字都考
             let shuffled = shuffleArray([...currentVocabList]); 
-            const quizLength = Math.min(10, shuffled.length);
-            quizQueue = shuffled.slice(0, quizLength); 
+            quizQueue = shuffled; 
 
             quizIndex = 0;
             quizScore = 0;
             isQuizFinished = false;
-            canClick = true;
-            hintsRemaining = 5; // 重置拼字提示次數
 
-            document.getElementById('q-total').innerText = quizLength;
-            
-            // 根據類型切換介面
-            const uiSpelling = document.getElementById('ui-spelling');
-            const uiChoice = document.getElementById('ui-choice');
-
-            if (currentModeType === 'spelling') {
-                uiSpelling.classList.remove('hidden');
-                uiChoice.classList.add('hidden');
-            } else {
-                uiSpelling.classList.add('hidden');
-                uiChoice.classList.remove('hidden');
-            }
-
+            document.getElementById('q-total').innerText = quizQueue.length;
             updateQuizUI();
             showQuizQuestion();
         }
@@ -390,25 +406,45 @@
             const currentWord = quizQueue[quizIndex];
             document.getElementById('quiz-question').innerText = currentWord.ch;
             document.getElementById('feedback').innerText = '';
+            document.getElementById('answer-input').value = '';
+            document.getElementById('hint-display').innerText = '';
+            document.getElementById('answer-input').focus();
             
-            if (currentModeType === 'spelling') {
-                // 拼字模式設定
-                document.getElementById('answer-input').value = '';
-                document.getElementById('hint-display').innerText = '';
-                document.getElementById('answer-input').focus();
-                isHintUsedThisQuestion = false;
-                updateHintButtonState();
-            } else {
-                // 選擇題模式設定
-                canClick = true;
-                generateChoiceButtons(currentWord);
-            }
+            // 每題重置提示狀態
+            isHintUsedThisQuestion = false;
+            updateHintButtonState();
             
             updateQuizUI();
         }
 
+        // --- 提示邏輯 (每題一次，只顯示首字母) ---
+        function useHint() {
+            if (!isHintUsedThisQuestion) {
+                isHintUsedThisQuestion = true; 
+                const word = quizQueue[quizIndex].en;
+                
+                // 顯示首字母
+                let hintText = word.charAt(0) + " _ _ _";
+                document.getElementById('hint-display').innerText = hintText;
+                
+                updateHintButtonState(); 
+                document.getElementById('answer-input').focus();
+            }
+        }
+
+        function updateHintButtonState() {
+            const btn = document.getElementById('btn-hint');
+            if (isHintUsedThisQuestion) {
+                btn.disabled = true;
+                btn.innerText = "💡 提示已使用";
+            } else {
+                btn.disabled = false;
+                btn.innerText = "💡 給我第一個字母提示";
+            }
+        }
+
         // --- 拼字邏輯 ---
-        function checkSpellingAnswer() {
+        function checkAnswer() {
             if (isQuizFinished) return;
             const userAns = document.getElementById('answer-input').value.trim();
             const feedback = document.getElementById('feedback');
@@ -416,6 +452,7 @@
             
             if (!userAns) return; 
 
+            // 轉小寫比對
             if (userAns.toLowerCase() === currentWord.en.toLowerCase()) {
                 feedback.innerText = "Correct! ✅";
                 feedback.className = "feedback correct-text";
@@ -425,87 +462,16 @@
             } else {
                 feedback.innerText = `Oops! 答案是: ${currentWord.en}`;
                 feedback.className = "feedback wrong-text";
-                setTimeout(nextQuestion, 2000);
-            }
-        }
-
-        function useHint() {
-            if (hintsRemaining > 0 && !isHintUsedThisQuestion) {
-                hintsRemaining--; 
-                isHintUsedThisQuestion = true; 
-                const word = quizQueue[quizIndex].en;
-                let hintText = word.length <= 2 ? word : `${word.charAt(0)} ... ${word.charAt(word.length - 1)}`;
-                document.getElementById('hint-display').innerText = `提示: ${hintText}`;
-                updateHintButtonState(); 
-                document.getElementById('answer-input').focus();
-            }
-        }
-        function updateHintButtonState() {
-            const btn = document.getElementById('btn-hint');
-            if (hintsRemaining <= 0 || isHintUsedThisQuestion) {
-                btn.disabled = true;
-                btn.innerText = hintsRemaining <= 0 ? "💡 提示 (已用完)" : "💡 提示 (已顯示)";
-            } else {
-                btn.disabled = false;
-                btn.innerText = `💡 提示 (剩餘: ${hintsRemaining})`;
+                setTimeout(nextQuestion, 2000); // 答錯停久一點讓孩子看正確拼法
             }
         }
         
-        // 拼字模式按 Enter 提交
+        // 按 Enter 提交
         document.getElementById("answer-input").addEventListener("keypress", function(event) {
-            if (event.key === "Enter" && currentModeType === 'spelling') {
-                checkSpellingAnswer();
+            if (event.key === "Enter") {
+                checkAnswer();
             }
         });
-
-        // --- 選擇題邏輯 ---
-        function generateChoiceButtons(currentWord) {
-            let options = [currentWord];
-            let distractor;
-            // 找一個不一樣的單字當干擾項
-            do {
-                const randIdx = Math.floor(Math.random() * currentVocabList.length);
-                distractor = currentVocabList[randIdx];
-            } while (distractor.en === currentWord.en);
-            options.push(distractor);
-            options = shuffleArray(options);
-
-            const container = document.getElementById('options-container');
-            container.innerHTML = '';
-            
-            options.forEach(opt => {
-                const btn = document.createElement('button');
-                btn.className = 'option-btn';
-                btn.innerText = opt.en;
-                btn.onclick = () => checkChoice(btn, opt.en, currentWord.en);
-                container.appendChild(btn);
-            });
-        }
-
-        function checkChoice(btnElement, selectedEn, correctEn) {
-            if (!canClick) return; 
-            canClick = false;
-            const feedback = document.getElementById('feedback');
-            
-            if (selectedEn === correctEn) {
-                btnElement.classList.add('correct'); 
-                feedback.innerText = "Correct! ✅";
-                feedback.className = "feedback correct-text";
-                quizScore += 10;
-                speak(correctEn);
-                setTimeout(nextQuestion, 1000); 
-            } else {
-                btnElement.classList.add('wrong'); 
-                feedback.innerText = `Oops! 答案是: ${correctEn}`;
-                feedback.className = "feedback wrong-text";
-                // 標示正確答案
-                document.querySelectorAll('.option-btn').forEach(b => {
-                    if (b.innerText === correctEn) b.classList.add('correct');
-                });
-                speak(correctEn); 
-                setTimeout(nextQuestion, 2000); 
-            }
-        }
 
         function updateQuizUI() {
             document.getElementById('q-progress').innerText = quizIndex + 1;
