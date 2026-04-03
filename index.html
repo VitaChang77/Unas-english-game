@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE 
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
@@ -107,6 +107,8 @@
             text-align: center;
             font-family: 'Comic Sans MS', sans-serif;
         }
+        input[type="text"]:disabled { background-color: #f5f5f5; color: #888; }
+
         .hint-btn {
             background-color: #FFC107;
             color: #333;
@@ -210,9 +212,7 @@
     </div>
 
     <script>
-        // --- 資料庫區 (四年級下學期 Week 2 - Week 17) ---
-        // 注意：為了考試順利，「we 我們/our 我們的」已經幫您拆分成兩個單字方便作答
-        // 「mask 口罩/面具」則統整為同一個中文題目
+        // --- 資料庫區 ---
         const wordData = {
             week2: [
                 {ch: "三十", en: "thirty"}, {ch: "四十", en: "forty"}, {ch: "五十", en: "fifty"}, 
@@ -298,7 +298,10 @@
         let quizIndex = 0;      
         let quizScore = 0;
         let isQuizFinished = false;
+        
+        // 本題狀態變數
         let isHintUsedThisQuestion = false;
+        let wrongCount = 0; // 記錄同一題錯了幾次
 
         // 初始化
         window.onload = function() { 
@@ -310,16 +313,13 @@
             const selector = document.getElementById('week-select');
             const selectedWeek = selector.value;
             
-            // 載入選擇的週次單字
             currentVocabList = wordData[selectedWeek];
 
-            // 重置練習
             studyIdx = 0;
             isFlipped = false;
             document.getElementById('total-words').innerText = currentVocabList.length;
             updateStudyCard();
             
-            // 如果在考試中，重置考試
             if (!document.getElementById('quiz-area').classList.contains('hidden')) {
                 startNewQuizRound();
             }
@@ -389,7 +389,6 @@
             document.getElementById('quiz-result').classList.add('hidden');
             document.getElementById('quiz-playing').classList.remove('hidden');
 
-            // 該週所有的單字都考
             let shuffled = shuffleArray([...currentVocabList]); 
             quizQueue = shuffled; 
 
@@ -406,24 +405,27 @@
             const currentWord = quizQueue[quizIndex];
             document.getElementById('quiz-question').innerText = currentWord.ch;
             document.getElementById('feedback').innerText = '';
-            document.getElementById('answer-input').value = '';
-            document.getElementById('hint-display').innerText = '';
-            document.getElementById('answer-input').focus();
             
-            // 每題重置提示狀態
+            const inputField = document.getElementById('answer-input');
+            inputField.value = '';
+            inputField.disabled = false; // 解除鎖定
+            document.getElementById('hint-display').innerText = '';
+            inputField.focus();
+            
+            // 每題重置狀態
             isHintUsedThisQuestion = false;
+            wrongCount = 0; 
             updateHintButtonState();
             
             updateQuizUI();
         }
 
-        // --- 提示邏輯 (每題一次，只顯示首字母) ---
+        // --- 提示邏輯 ---
         function useHint() {
             if (!isHintUsedThisQuestion) {
                 isHintUsedThisQuestion = true; 
                 const word = quizQueue[quizIndex].en;
                 
-                // 顯示首字母
                 let hintText = word.charAt(0) + " _ _ _";
                 document.getElementById('hint-display').innerText = hintText;
                 
@@ -443,26 +445,45 @@
             }
         }
 
-        // --- 拼字邏輯 ---
+        // --- 拼字檢查邏輯 (重點修改：答錯停留在原題) ---
         function checkAnswer() {
             if (isQuizFinished) return;
-            const userAns = document.getElementById('answer-input').value.trim();
+            const inputField = document.getElementById('answer-input');
+            const userAns = inputField.value.trim();
             const feedback = document.getElementById('feedback');
             const currentWord = quizQueue[quizIndex];
             
             if (!userAns) return; 
 
-            // 轉小寫比對
             if (userAns.toLowerCase() === currentWord.en.toLowerCase()) {
-                feedback.innerText = "Correct! ✅";
+                // 【答對了】
+                feedback.innerText = "答對了！ ✅";
                 feedback.className = "feedback correct-text";
-                quizScore += 10;
+                
+                // 只有「第一次就答對」(沒錯過) 才能得 10 分
+                if (wrongCount === 0) {
+                    quizScore += 10;
+                }
+                updateQuizUI();
+                
                 speak(currentWord.en);
+                inputField.disabled = true; // 鎖定輸入框，準備換題
                 setTimeout(nextQuestion, 1200);
             } else {
-                feedback.innerText = `Oops! 答案是: ${currentWord.en}`;
+                // 【答錯了】
+                wrongCount++; // 錯誤次數 +1
+                
+                if (wrongCount >= 3) {
+                    // 卡關防呆：錯 3 次以上直接給答案，但仍要自己打出來
+                    feedback.innerText = `正確答案是: ${currentWord.en} (請照著拼一次)`;
+                } else {
+                    // 一般錯誤提示
+                    feedback.innerText = "答錯了，請再試一次！💪";
+                }
+                
                 feedback.className = "feedback wrong-text";
-                setTimeout(nextQuestion, 2000); // 答錯停久一點讓孩子看正確拼法
+                inputField.value = ''; // 清空讓小朋友重打
+                inputField.focus();    // 焦點回到輸入框，停留在這一題
             }
         }
         
