@@ -1,4 +1,4 @@
-<!DOCTYPE 
+<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
@@ -445,7 +445,7 @@
             }
         }
 
-        // --- 拼字檢查邏輯 (重點修改：答錯停留在原題) ---
+        // --- 拼字檢查邏輯 (答對必定給分！) ---
         function checkAnswer() {
             if (isQuizFinished) return;
             const inputField = document.getElementById('answer-input');
@@ -460,10 +460,8 @@
                 feedback.innerText = "答對了！ ✅";
                 feedback.className = "feedback correct-text";
                 
-                // 只有「第一次就答對」(沒錯過) 才能得 10 分
-                if (wrongCount === 0) {
-                    quizScore += 10;
-                }
+                // 修改：只要順利答對，不管重試幾次都給 10 分，鼓勵小朋友！
+                quizScore += 10;
                 updateQuizUI();
                 
                 speak(currentWord.en);
@@ -474,7 +472,7 @@
                 wrongCount++; // 錯誤次數 +1
                 
                 if (wrongCount >= 3) {
-                    // 卡關防呆：錯 3 次以上直接給答案，但仍要自己打出來
+                    // 卡關防呆：錯 3 次以上直接給答案，但仍要自己打出來才能過關得分
                     feedback.innerText = `正確答案是: ${currentWord.en} (請照著拼一次)`;
                 } else {
                     // 一般錯誤提示
